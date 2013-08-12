@@ -17,22 +17,22 @@
 (defn- from-xml [request]
   "Verifies an incoming request and consumes the body, parsing it and returning
   the result as an vector of XML elements as maps."
-(if (xml-request? request)
-    (if-let [body (:body request)]
-      (if-not (coll? body)
-        (zip/xml-zip (xml/parse (input-stream body)))))))
+  (if (xml-request? request)
+      (if-let [body (:body request)]
+        (if-not (coll? body)
+          (zip/xml-zip (xml/parse (input-stream body)))))))
 
 (defn wrap-xml-request [handler]
   "Intercepts incoming requests and attempts to parse the body as XML. If 
   successful, will add the resulting XML maps to the :params key, the :xml-params
   key, and the :body."
-(fn [request]
-    (if-let [xml-map (from-xml request)]
-      (handler (-> request
-                   (assoc :body xml-map)
-                   (assoc :xml-params xml-map)
-                   (update-in [:params] merge xml-map)))
-      (handler request))))
+  (fn [request]
+      (if-let [xml-map (from-xml request)]
+        (handler (-> request
+                     (assoc :body xml-map)
+                     (assoc :xml-params xml-map)
+                     (update-in [:params] merge xml-map)))
+        (handler request))))
 
 (defn wrap-xml-response [handler]
   "Intercepts outgoing collections and attempts to coerce them into XML."
