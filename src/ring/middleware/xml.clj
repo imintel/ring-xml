@@ -12,7 +12,10 @@
 
 (defn- to-xml [data]
   "Convert a valid collection to XML."
-  (xml/emit-element (zip/root data)))
+  (clojure.string/replace
+    (with-out-str 
+      (xml/emit-element (zip/root data)))
+    #"\n" ""))
 
 (defn- from-xml [request]
   "Verifies an incoming request and consumes the body, parsing it and returning
