@@ -5,7 +5,7 @@ Ring middleware functions for working with XML.
 ## Installation
 Add the following to your project.clj: 
 
-	[imintel/ring-xml "0.0.1"]
+	[imintel/ring-xml "0.0.2"]
 
 ## Usage
 The exported functionality of the library consists of only two simple functions.  
