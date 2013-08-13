@@ -1,5 +1,5 @@
-(ns rocco.ring.test.xml
-  (:use rocco.ring.xml
+(ns imintel.ring.test.xml
+  (:use imintel.ring.xml
         clojure.test 
         ring.util.io))
 

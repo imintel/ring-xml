@@ -1,4 +1,4 @@
-(ns rocco.ring.xml
+(ns imintel.ring.xml
   (:use ring.util.response
         [clojure.java.io :only [input-stream]])
   (:require [clojure.xml :as xml]

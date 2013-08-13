@@ -3,7 +3,9 @@
 Ring middleware functions for working with XML. 
 
 ## Installation
-Not on Clojars yet! 
+Add the following to your project.clj: 
+
+	[imintel/ring-xml "0.0.1"]
 
 ## Usage
 The exported functionality of the library consists of only two simple functions.  
