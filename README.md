@@ -1,6 +1,8 @@
 # ring-xml
 
-Ring middleware functions for working with XML. 
+Ring middleware functions for working with XML.  
+
+Inspired by and modeled after the [ring-json](https://github.com/ring-clojure/ring-json) middleware.  
 
 ## Installation
 Add the following to your project.clj: 
