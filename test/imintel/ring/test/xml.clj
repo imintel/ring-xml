@@ -19,3 +19,12 @@
       (is (= (get-in response [:headers "Content-Type"]) "application/xml; charset=utf-8"))
       (println response)
       (is (= (:body response) "<xml/>")))))
+
+(deftest test-invalid-xml-returns-400
+  (let [handler (wrap-xml-request identity)]
+      (let [request   {:content-type "application/xml"
+                       :body (string-input-stream "<xml></XML>")}
+            response  (handler request)]
+      (is (= (:status response) 400))
+      (is (= (get-in response [:headers "Content-Type"]) "text/plain"))
+      (is (= (:body response) "The element type \"xml\" must be terminated by the matching end-tag \"</xml>\".")))))

@@ -2,7 +2,8 @@
   (:use ring.util.response
         [clojure.java.io :only [input-stream]])
   (:require [clojure.xml :as xml]
-            [clojure.zip :as zip]))
+            [clojure.zip :as zip])
+  (:import [org.xml.sax SAXParseException]))
 
 (defn- xml-request? 
   "Determine if the incoming collection represents an XML request."
@@ -25,17 +26,26 @@
         (if-not (coll? body)
           (zip/xml-zip (xml/parse (input-stream body)))))))
 
+(defn- xml-error-response [^Exception e]
+  "Convert Exception into response"
+  (-> (.getMessage e)
+      (response) 
+      (status 400)
+      (content-type "text/plain")))
+
 (defn wrap-xml-request [handler]
   "Intercepts incoming requests and attempts to parse the body as XML. If 
   successful, will add the resulting XML maps to the :params key, the :xml-params
   key, and the :body."
   (fn [request]
+    (try
       (if-let [xml-map (from-xml request)]
         (handler (-> request
                      (assoc :body xml-map)
                      (assoc :xml-params xml-map)
                      (update-in [:params] merge xml-map)))
-        (handler request))))
+        (handler request))
+      (catch SAXParseException spe (xml-error-response spe)))))
 
 (defn wrap-xml-response [handler]
   "Intercepts outgoing collections and attempts to coerce them into XML."
